@@ -13,12 +13,12 @@ $(document).ready(() => {
    const scoreEl = document.querySelector('.score');
    const startAgainBtn = document.querySelector('.start-again');
    const loader = document.querySelector('.scaling-dots');
+   nextQuestionBtn.disabled = true;
    let dataNumber = -1;
    let correctAnswerCounter = 0;
    let dataHolder;
-   containerDiv.style.display = 'none';
-
-
+   containerDiv.style.display = 'none'; 
+   
    async function loadQuestion() {
       const APIUrl = 'https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple';
       const result = await fetch(`${APIUrl}`);
@@ -32,7 +32,7 @@ $(document).ready(() => {
          $(startButton).fadeOut(0);
       });
    }
-
+   
    function displayTest(data) {
       dataNumber++;
       const arrayLength = data.length;
@@ -67,6 +67,7 @@ $(document).ready(() => {
          answers.forEach(item => {
             item.addEventListener('click', (e) => {
                const currentAnswer = e.target.innerText;
+               nextQuestionBtn.disabled = false;
                displayAnswer(answers, correctAnswer, currentAnswer, arrayLength);
                disableButtons(answers);
             });
@@ -109,6 +110,7 @@ $(document).ready(() => {
       });
    }
    nextQuestionBtn.addEventListener('click', () => {
+      nextQuestionBtn.disabled = true;
       displayTest(dataHolder);
    });
    startAgainBtn.addEventListener('click', () => startAgain());
@@ -119,6 +121,7 @@ $(document).ready(() => {
    function replaceEntities(str) {
       return str.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&#039;/g, "'").replace(/&quot;/g, '"');
    }
+
 
    loadQuestion();
 });
